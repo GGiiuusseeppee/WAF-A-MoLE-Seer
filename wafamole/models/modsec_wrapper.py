@@ -116,5 +116,7 @@ class PyModSecurityWrapper(Model):
         for rule in transaction.m_rulesMessages:
             rule.m_severity = Severity(rule.m_severity).score
 
+            print(rule.m_severity)
+
         total_score = sum([ rule.m_severity for rule in transaction.m_rulesMessages if get_paranoia_level(rule) <= self.paranoia_level])
         return total_score
