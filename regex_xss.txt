@@ -1,0 +1,8 @@
+(alert|eval|confirm|void|prompt|fromcharcode|msgbox|geturl|getelementbyid|javascript:[a-z0-9$_]+|vbscript:.+)((\(.*\))|(`.*`))
+<.+(onclick|onmouseover|ondragover|onmouseenter|onmousemove|onchange|onerror|oneventchange|onload|onstart|onfinish|onmousedown|onmouseout|onpointerenter|ontoggle|onshow|onauxclick|ondblclick|oncontextmenu|onmouseleave|ontouchcancel|onanimationiteration|xmlns(:[a-z]*)?)=
+<script
+<(style|table)[^<]*>
+<(img|div|xml(:[a-z]*)?|html|base|bgsound|body|embed|frame|iframe|link|meta)[\s/]+[:\-a-z]*=
+<(a|svg|input|isindex|object|button|set|text|image|template|path|rect|circle|td|details|source|audio([\s/]+[a-z]+)*|video([\s/]+[a-z]+)*)[\s/]+[:\-a-z]*=[^<]*>
+</script|</title
+</style>|</image>|</template>

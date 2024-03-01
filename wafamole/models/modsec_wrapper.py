@@ -74,7 +74,7 @@ class PyModSecurityWrapper(Model):
                 self.rules.loadFromUri(str(self.rules_path / rule))
             else:
                 raise FileNotFoundError(f"{rule} not found in Rules path")
-
+        print(self.rules)
 
         for rule in sorted((self.rules_path / "rules").glob("*.conf")):
             self.rules.loadFromUri(str(self.rules_path / "rules" / rule))
@@ -93,9 +93,10 @@ class PyModSecurityWrapper(Model):
         method = "GET"
         base_uri = "http://www.modsecurity.org/test",
         encoded_query = urlencode({'q': value})
+        
         full_url = f"{base_uri}?{encoded_query}"
+        
         parsed_url = urlparse(full_url)
-
         transaction = Transaction(self.modsec, self.rules)
 
         transaction.processURI(full_url, method, "2.0")
@@ -116,7 +117,7 @@ class PyModSecurityWrapper(Model):
         for rule in transaction.m_rulesMessages:
             rule.m_severity = Severity(rule.m_severity).score
 
-            print(rule.m_severity)
+            
 
         total_score = sum([ rule.m_severity for rule in transaction.m_rulesMessages if get_paranoia_level(rule) <= self.paranoia_level])
         return total_score

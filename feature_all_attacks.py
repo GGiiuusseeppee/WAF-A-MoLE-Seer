@@ -8,7 +8,7 @@ def load_regex_patterns(file_path):
     with open(file_path, 'r') as file:
         return [line.strip() for line in file if line.strip()]
 
-regex_file_path = 'regex_sql.txt'
+regex_file_path = 'regex_seer.txt'
 regex_patterns = load_regex_patterns(regex_file_path)
 
 
@@ -32,7 +32,7 @@ def process_payloads(payloads_file_path, regex_patterns):
 
 delimiter = '\n' 
 
-attacks_path = 'payload_xxe.txt'
+attacks_path = 'wafamole_dataset/attacks.sql.11'
 benign_path = 'wafamole_dataset/sane.sql.02'
 
 mal_payloads = read_payloads(attacks_path, delimiter)
@@ -43,11 +43,11 @@ ben_payloads = read_payloads(benign_path, delimiter)
 all_payloads = mal_payloads+ben_payloads
 random.shuffle(all_payloads)
 
-features = process_payloads(benign_path, regex_patterns)
-
+features = process_payloads(attacks_path, regex_patterns)
+features = features.to_numpy()
 
 print('regex:\n',regex_patterns)
-print(features)
+print(features[:17])
 '''
 for i, vector in enumerate(features):
     print(f"Payload {i+1}: Feature Vector = {vector}")  

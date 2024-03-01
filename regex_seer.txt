@@ -1,0 +1,5 @@
+^\s*('|[\w\W]*'[\s]*)[A-Za-z0-9]+\s*=\s*([0-9]+|[A-Za-z]+)[\s]*$
+^\s*([0-9]+|"|')\s+(or)\s+([0-9]+|""|'')\s*=\s*([0-9]+|"|')\s*$
+^\s*(.*'\s*|.*"\s*|[0-9]+\s+)(or|and)\s+([0-9]+|('|").*('|"))\s*[=><]+\s*([0-9]+|('|").*('|")*)\s*$
+^.*('|"|;)\s*((alter|and|char|chr|convert|create|dbms_pipe|delete|distinct|drop|exec|execute|from|group by|having|insert into|join|or|order by|pg_sleep|receive_message|select|sleep|union(\s+all)*|update|waitfor|where)\s+[=\(\)<>]+\s*){2,}.*$
+('|"|;)(\s*|[,;\(\)=<>'"0-9\s]+|(\s*(alter|and|char|chr|convert|create|dbms_pipe|delete|distinct|drop|exec|execute|from|group by|having|insert into|join|or|order by|pg_sleep|receive_message|select|sleep|union(\s+all)*|update|waitfor|where).*))(\-\-|\#|/\*)
