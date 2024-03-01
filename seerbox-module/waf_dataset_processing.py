@@ -4,7 +4,6 @@ import re
 import numpy as np
 
 
-
 class DataLoader:
     def __init__(self, malicious_path, benign_path):
         self.malicious_path=malicious_path
@@ -58,10 +57,3 @@ class FeatureExtractor:
     def save_features(self, features, save_path):
         np.save(save_path, features)
         print(f"Features saved to {save_path}")
-
-
-
-
-
-
-

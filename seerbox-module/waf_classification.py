@@ -46,7 +46,7 @@ class SeerBox:
 
     def predict_and_evaluate(self):
 
-        if self.model:        
+        if self.model:
             y_pred = self.model.predict(self._xts)
             print('true lavbel',self._yts[:33])
             print('preedict label',y_pred[:33])
@@ -71,9 +71,9 @@ class SeerBox:
 
       if self.model:
         y_scores = self.model.decision_function(self._xts)
-        
+
         fpr, tpr, thr = roc_curve(self._yts, y_scores)
-        
+
         auc = roc_auc_score(self._yts, y_scores)
         plt.plot(fpr, tpr, marker='.', label='SVM (AUC = %0.3f)' %auc)
         plt.title("ROC con sum Curve")
@@ -82,7 +82,7 @@ class SeerBox:
         plt.legend()
         plt.plot([0, 1], [0, 1], 'k--', label='Chance')
         plt.show()
-       
+
 
       else:
 
@@ -107,7 +107,7 @@ class SeerBox:
             self.fit_model()
         else:
             self.compute_sum_of_regex_triggers()
-        
+
         self.predict_and_evaluate()
 
         self.plot_roc_curve()

@@ -1,6 +1,6 @@
 import numpy as np
-from Waf_dataset_processing import DataLoader, FeatureExtractor
-from Waf_classification import SeerBox
+from waf_dataset_processing import DataLoader, FeatureExtractor
+from waf_classification import SeerBox
 from mlxtend.plotting import plot_decision_regions
 import matplotlib.pyplot as plt
 from sklearn.svm import SVC

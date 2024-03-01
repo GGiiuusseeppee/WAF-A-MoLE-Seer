@@ -1,9 +1,0 @@
-(OR\s+1=1|UNION\s+SELECT|(--|#|/\*)|xp_cmdshell|\b(WAITFOR\s+DELAY|SELECT\s+PG_SLEEP|SLEEP)\b)
-(?i)\b(or|and)\b.*=(['\"])(.*?)\2
-(?i)\bunion\b.*\bselect\b
-(\/\*.*?\*\/|--[^\r\n]*|#)
-0x[0-9A-Fa-f]+
-\bselect\b.*\bfrom\b.*\bselect\b
-(?i)\b(xp_|sp_|exec)\b
-(?i)\bconcat\b|\bchar\b|\bcast\b|\bconvert\b
-(?i)\band\b.*\b=\b|\bor\b.*\b=\b
