@@ -59,7 +59,7 @@ def overall_score(matched_rules):
     return sum(rule.severity for rule in matched_rules)
 
 
-class PyModSecurityWrapper(Model):
+class PyModSecurityWrapperMod(Model):
 
     def __init__(self, rules_path):
         self.rules_path = Path(rules_path)
@@ -91,34 +91,47 @@ class PyModSecurityWrapper(Model):
     def classify(self, value):
 
         method = "GET"
-        base_uri = "http://www.modsecurity.org/test",
+        base_uri = "http://www.modsecurity.org/test"
         encoded_query = urlencode({'q': value})
-        
+
         full_url = f"{base_uri}?{encoded_query}"
-        
         parsed_url = urlparse(full_url)
         transaction = Transaction(self.modsec, self.rules)
 
         transaction.processURI(full_url, method, "2.0")
-        
+
         # Headers
         headers = {
-            "Host": parsed_url.netloc, # Avoid matching rule 920280
-            "Accept": "text/html", # Avoid matching rule 920280
-            "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0" # Avoid matching rule 920280
+            "Host": parsed_url.netloc,
+            "Accept": "text/html",
+            "User-Agent": "Mozilla/5.0"
         }
         for name, value in headers.items():
             transaction.addRequestHeader(name, value)
         transaction.processRequestHeaders()
-
         transaction.processRequestBody()
 
-        # Decorate RuleMessages
-        for rule in transaction.m_rulesMessages:
-            rule.m_severity = Severity(rule.m_severity).score
-            print(rule.m_ruleId)
-
+       
+        if not hasattr(self, 'crs_rule_ids') or not self.crs_rule_ids:
+            self.crs_rule_ids = set()
             
+        
+        # Initialize the feature vector with zeros for all known CRS rule IDs
+        feature_vector = {rule_id: 0 for rule_id in self.crs_rule_ids}
+        total_score = 0
 
-        total_score = sum([ rule.m_severity for rule in transaction.m_rulesMessages if get_paranoia_level(rule) <= self.paranoia_level])
-        return total_score
+        # Update the feature vector and calculate total score based on triggered rules
+        for rule in transaction.m_rulesMessages:
+            rule_id = rule.m_ruleId
+            if get_paranoia_level(rule) <= self.paranoia_level:
+                severity_score = Severity(rule.m_severity).score
+                total_score += severity_score
+                feature_vector[rule_id] = 1
+                # Populate self.crs_rule_ids with new rule IDs as they are discovered
+                self.crs_rule_ids.add(rule_id)
+
+        # Ensure the feature vector includes all known CRS rule IDs
+        feature_vector.update({rule_id: 0 for rule_id in self.crs_rule_ids if rule_id not in feature_vector})
+
+        return feature_vector, total_score
+
